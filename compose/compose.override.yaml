@@ -1,0 +1,28 @@
+services:
+    immich_server:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.immich.rule=Host(`immich.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.immich.entryPoints=websecure'
+
+    ocis:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.ocis.rule=Host(`ocis.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.ocis.entryPoints=websecure'
+      environment:
+        OCIS_URL: https://ocis.${MY_DOMAIN}
+    
+    paperless:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.paperless.rule=Host(`paperless.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.paperless.entryPoints=websecure'
+      environment:
+        PAPERLESS_URL: https://paperless.${MY_DOMAIN}
+
+    tandoor_nginx:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.tandoor.rule=Host(`tandoor.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.tandoor.entryPoints=websecure'
