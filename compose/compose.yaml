@@ -3,6 +3,7 @@ include:
   - ../ocis/compose.yaml
   - ../paperless/compose.yaml
   - ../tandoor/compose.yaml
+  - ../backup/compose.yaml
 
 services:
   proxy:

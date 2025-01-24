@@ -1,0 +1,72 @@
+services:
+  restic_backup:
+    image: mazzolino/restic
+    container_name: restic_backup
+    restart: unless-stopped
+    env_file:
+      - .env
+      - .secrets.env
+    environment:
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 30 3 * * *"
+    volumes:
+      - /mnt/media0/immich/library:/mnt/media0/immich/library:ro
+      - /home/jonask/data/immich/postgresql:/home/jonask/data/immich/postgresql:ro
+      - /mnt/media0/ocis/config:/mnt/media0/ocis/config:ro
+      - /mnt/media0/ocis/data:/mnt/media0/ocis/data:ro
+      - /home/jonask/data/paperless/postgresql/data:/home/jonask/data/paperless/postgresql/data:ro
+      - /mnt/media0/paperless/data:/mnt/media0/paperless/data:ro
+      - /mnt/media0/paperless/media:/mnt/media0/paperless/media:ro
+      - /mnt/media0/paperless/export:/mnt/media0/paperless/export:ro
+      - /mnt/media0/paperless/consume:/mnt/media0/paperless/consume:ro
+      - /home/jonask/data/tandoor/postgresql:/home/jonask/data/tandoor/postgresql:ro
+      - /mnt/media0/tandoor/mediafiles:/mnt/media0/tandoor/mediafiles:ro
+      - /mnt/media0/backup_repository:/mnt/backup_repository
+
+  restic_prune:
+    image: mazzolino/restic
+    container_name: restic_prune
+    restart: unless-stopped
+    env_file:
+      - .env
+      - .secrets.env
+    environment:
+      SKIP_INIT: "true"
+      PRUNE_CRON: "0 0 4 * * *"
+    volumes:
+      - /mnt/media0/immich/library:/mnt/media0/immich/library:ro
+      - /home/jonask/data/immich/postgresql:/home/jonask/data/immich/postgresql:ro
+      - /mnt/media0/ocis/config:/mnt/media0/ocis/config:ro
+      - /mnt/media0/ocis/data:/mnt/media0/ocis/data:ro
+      - /home/jonask/data/paperless/postgresql/data:/home/jonask/data/paperless/postgresql/data:ro
+      - /mnt/media0/paperless/data:/mnt/media0/paperless/data:ro
+      - /mnt/media0/paperless/media:/mnt/media0/paperless/media:ro
+      - /mnt/media0/paperless/export:/mnt/media0/paperless/export:ro
+      - /mnt/media0/paperless/consume:/mnt/media0/paperless/consume:ro
+      - /home/jonask/data/tandoor/postgresql:/home/jonask/data/tandoor/postgresql:ro
+      - /mnt/media0/tandoor/mediafiles:/mnt/media0/tandoor/mediafiles:ro
+      - /mnt/media0/backup_repository:/mnt/backup_repository
+
+  restic_check:
+    image: mazzolino/restic
+    container_name: restic_check
+    restart: unless-stopped
+    env_file:
+      - .env
+      - .secrets.env
+    environment:
+      SKIP_INIT: "true"
+      CHECK_CRON: "0 15 5 * * *"
+    volumes:
+      - /mnt/media0/immich/library:/mnt/media0/immich/library:ro
+      - /home/jonask/data/immich/postgresql:/home/jonask/data/immich/postgresql:ro
+      - /mnt/media0/ocis/config:/mnt/media0/ocis/config:ro
+      - /mnt/media0/ocis/data:/mnt/media0/ocis/data:ro
+      - /home/jonask/data/paperless/postgresql/data:/home/jonask/data/paperless/postgresql/data:ro
+      - /mnt/media0/paperless/data:/mnt/media0/paperless/data:ro
+      - /mnt/media0/paperless/media:/mnt/media0/paperless/media:ro
+      - /mnt/media0/paperless/export:/mnt/media0/paperless/export:ro
+      - /mnt/media0/paperless/consume:/mnt/media0/paperless/consume:ro
+      - /home/jonask/data/tandoor/postgresql:/home/jonask/data/tandoor/postgresql:ro
+      - /mnt/media0/tandoor/mediafiles:/mnt/media0/tandoor/mediafiles:ro
+      - /mnt/media0/backup_repository:/mnt/backup_repository
