@@ -25,9 +25,7 @@ services:
       # password policies
       OCIS_PASSWORD_POLICY_BANNED_PASSWORDS_LIST: "banned-password-list.txt"
     volumes:
-      - ./config/banned-password-list.txt:/etc/ocis/banned-password-list.txt
       - /mnt/media0/ocis/config:/etc/ocis
       - /mnt/media0/ocis/data:/var/lib/ocis
-    labels:
-      - "traefik.http.services.ocis.loadbalancer.server.port=9200"
+      - ./config/banned-password-list.txt:/etc/ocis/banned-password-list.txt
     restart: unless-stopped
