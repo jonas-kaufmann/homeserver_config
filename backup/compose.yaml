@@ -7,7 +7,7 @@ services:
       - .env
       - .secrets.env
     environment:
-      RUN_ON_STARTUP: "true"
+      RUN_ON_STARTUP: "false"
       BACKUP_CRON: "0 30 3 * * *"
     volumes:
       - /mnt/media0/immich/library:/mnt/media0/immich/library:ro
