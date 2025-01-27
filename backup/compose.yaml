@@ -8,7 +8,7 @@ services:
       - .secrets.env
     environment:
       RUN_ON_STARTUP: "false"
-      BACKUP_CRON: "0 30 3 * * *"
+      BACKUP_CRON: "0 30 2 * * *"
     volumes:
       - /mnt/media0/immich/library:/mnt/media0/immich/library:ro
       - /home/jonask/data/immich/postgresql:/home/jonask/data/immich/postgresql:ro
