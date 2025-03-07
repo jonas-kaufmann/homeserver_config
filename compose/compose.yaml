@@ -31,9 +31,6 @@ services:
       - "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
       - "--entrypoints.websecure.http.tls.domains[0].main=${MY_DOMAIN}"
       - "--entrypoints.websecure.http.tls.domains[0].sans=*.${MY_DOMAIN}"
-      - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=0"
-      - "--entryPoints.websecure.transport.respondingTimeouts.writeTimeout=0"
-      - "--entryPoints.websecure.transport.respondingTimeouts.idleTimeout=0"
     volumes:
       - "../data/traefik/letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
