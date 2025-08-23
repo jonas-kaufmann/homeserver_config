@@ -3,25 +3,26 @@ include:
   - ../ocis/compose.yaml
   - ../paperless/compose.yaml
   - ../tandoor/compose.yaml
-  - ../backup/compose.yaml
+  # - ../backup/compose.yaml
 
 services:
   proxy:
     image: traefik
     container_name: traefik
-    depends_on: 
-      - authelia
+    # depends_on: 
+    #   - authelia
     restart: unless-stopped
     command:
       - "--log.level=WARN"
-      - "--api.insecure=true"
+      # - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      # - "--certificatesresolvers.myresolver.tailscale=true"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=duckdns"
-      - "--certificatesresolvers.letsencrypt.acme.email=jokau03+letsencrypt@gmail.com"
-      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.disablePropagationCheck=true"
-      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=hetzner"
+      - "--certificatesresolvers.letsencrypt.acme.email=jokau03+hetzner@gmail.com"
+      # - "--certificatesresolvers.letsencrypt.acme.dnschallenge.propagation.disableChecks=true"
+      # - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
       - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
@@ -34,42 +35,44 @@ services:
     volumes:
       - "../data/traefik/letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock"
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.api.rule=Host(`${MY_DOMAIN}`)'
+      - 'traefik.http.routers.api.rule=Host(`traefik.${MY_DOMAIN}`)'
       - 'traefik.http.routers.api.entryPoints=websecure'
-      - 'traefik.http.routers.api.service=api@internal'
-      - 'traefik.http.routers.api.middlewares=authelia@docker'
+      # - 'traefik.http.routers.api.service=api@internal'
+      # - 'traefik.http.routers.api.middlewares=authelia@docker'
     ports:
       - "443:443"
       - "80:80"
     environment:
       DUCKDNS_TOKEN: "${DUCKDNS_TOKEN}"
+      HETZNER_API_KEY: "${HETZNER_API_KEY}"
 
-  authelia_redis:
-    image: redis
-    restart: unless-stopped
-    container_name: authelia_redis
+  # authelia_redis:
+  #   image: redis
+  #   restart: unless-stopped
+  #   container_name: authelia_redis
 
-  authelia:
-    image: authelia/authelia
-    container_name: authelia
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.authelia.rule=Host(`auth.${MY_DOMAIN}`)'
-      - 'traefik.http.routers.authelia.entryPoints=websecure'
-      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/authz/forward-auth'
-      - 'traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true'
-      - 'traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Email,Remote-Name'
-    volumes:
-      - ../data/authelia:/config
-    restart: unless-stopped
-    expose: 
-      - 9091
-    environment:
-      TZ: Europe/Berlin
-      X_AUTHELIA_CONFIG_FILTERS: template
-      MY_DOMAIN: ${MY_DOMAIN}
-      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: /config/secrets/JWT_SECRET
-      AUTHELIA_SESSION_SECRET_FILE: /config/secrets/SESSION_SECRET
-      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /config/secrets/STORAGE_ENCRYPTION_KEY
+  # authelia:
+  #   image: authelia/authelia
+  #   container_name: authelia
+  #   labels:
+  #     - 'traefik.enable=true'
+  #     - 'traefik.http.routers.authelia.rule=Host(`auth.${MY_DOMAIN}`)'
+  #     - 'traefik.http.routers.authelia.entryPoints=websecure'
+  #     - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/authz/forward-auth'
+  #     - 'traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true'
+  #     - 'traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Email,Remote-Name'
+  #   volumes:
+  #     - ../data/authelia:/config
+  #   restart: unless-stopped
+  #   expose: 
+  #     - 9091
+  #   environment:
+  #     TZ: Europe/Berlin
+  #     X_AUTHELIA_CONFIG_FILTERS: template
+  #     MY_DOMAIN: ${MY_DOMAIN}
+  #     AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: /config/secrets/JWT_SECRET
+  #     AUTHELIA_SESSION_SECRET_FILE: /config/secrets/SESSION_SECRET
+  #     AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /config/secrets/STORAGE_ENCRYPTION_KEY
