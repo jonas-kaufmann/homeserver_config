@@ -4,6 +4,7 @@ include:
   - ../paperless/compose.yaml
   - ../tandoor/compose.yaml
   # - ../backup/compose.yaml
+  - ../pihole/compose.yaml
 
 services:
   proxy:

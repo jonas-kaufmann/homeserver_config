@@ -27,3 +27,9 @@ services:
         - 'traefik.enable=true'
         - 'traefik.http.routers.tandoor.rule=Host(`tandoor.${MY_DOMAIN}`)'
         - 'traefik.http.routers.tandoor.entryPoints=websecure'
+
+    pihole:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.pihole.rule=Host(`pihole.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.pihole.entryPoints=websecure'
