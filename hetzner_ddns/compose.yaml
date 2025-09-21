@@ -1,0 +1,12 @@
+services:
+  hetzner_ddns:
+    container_name: hetzner_ddns
+    build: .
+    environment:
+      MY_DOMAIN: ${MY_DOMAIN}
+      HETZNER_API_KEY: "${HETZNER_API_KEY}"
+    env_file:
+      - .secrets.env
+    volumes:
+      - ./state.json:/app/state.json
+    restart: unless-stopped

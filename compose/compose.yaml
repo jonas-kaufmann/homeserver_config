@@ -5,6 +5,7 @@ include:
   - ../tandoor/compose.yaml
   # - ../backup/compose.yaml
   - ../pihole/compose.yaml
+  - ../hetzner_ddns/compose.yaml
 
 services:
   proxy:
