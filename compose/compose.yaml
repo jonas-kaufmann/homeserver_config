@@ -6,6 +6,7 @@ include:
   # - ../backup/compose.yaml
   - ../pihole/compose.yaml
   - ../hetzner_ddns/compose.yaml
+  - ../homeassistant/compose.yaml
 
 services:
   proxy:
@@ -50,6 +51,9 @@ services:
     environment:
       DUCKDNS_TOKEN: "${DUCKDNS_TOKEN}"
       HETZNER_API_KEY: "${HETZNER_API_KEY}"
+    # required for homeassistant
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # authelia_redis:
   #   image: redis

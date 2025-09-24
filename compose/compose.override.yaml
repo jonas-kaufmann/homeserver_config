@@ -33,3 +33,10 @@ services:
         - 'traefik.enable=true'
         - 'traefik.http.routers.pihole.rule=Host(`pihole.${MY_DOMAIN}`)'
         - 'traefik.http.routers.pihole.entryPoints=websecure'
+
+    homeassistant:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.ha.rule=Host(`ha.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.ha.entryPoints=websecure'
+        - 'traefik.http.services.ha.loadbalancer.server.port=8123'
