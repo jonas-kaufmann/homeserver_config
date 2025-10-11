@@ -1,7 +1,7 @@
 services:
   ocis:
     container_name: ocis
-    image: owncloud/ocis:${OCIS_DOCKER_TAG:-latest}
+    image: owncloud/ocis:latest
     entrypoint:
       - /bin/sh
     # run ocis init to initialize a configuration file with random secrets
@@ -18,8 +18,6 @@ services:
       OCIS_INSECURE: "${INSECURE:-false}"
       # basic auth (not recommended, but needed for e.g., WebDav clients that do not support OpenID Connect)
       PROXY_ENABLE_BASIC_AUTH: "${PROXY_ENABLE_BASIC_AUTH:-false}"
-      # admin user password
-      IDM_ADMIN_PASSWORD: "${ADMIN_PASSWORD:-admin}" # this overrides the admin password from the configuration file
       # demo users
       IDM_CREATE_DEMO_USERS: "${DEMO_USERS:-false}"
       # password policies
