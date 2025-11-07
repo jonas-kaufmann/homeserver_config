@@ -6,39 +6,21 @@ services:
       - /home/jonask/data/tandoor/postgresql:/var/lib/postgresql/data
     env_file:
       - ./.env
-      - ./.secrets.env
     restart: unless-stopped
     
 
   tandoor:
     container_name: tandoor
-    image: kaufijonas/tandoor
+    image: vabene1111/recipes:master
     env_file:
       - ./.env
       - ./.secrets.env
     volumes:
       - staticfiles:/opt/recipes/staticfiles
-      - nginx_config:/opt/recipes/nginx/conf.d
       - /mnt/media0/tandoor/mediafiles:/opt/recipes/mediafiles
     depends_on:
       - tandoor_db
     restart: unless-stopped
 
-
-  tandoor_nginx:
-    container_name: tandoor_nginx
-    image: nginx:mainline-alpine
-    env_file:
-      - ./.env
-      - ./.secrets.env
-    volumes:
-      - nginx_config:/etc/nginx/conf.d:ro
-      - staticfiles:/static:ro
-      - /mnt/media0/tandoor/mediafiles:/media:ro
-    depends_on:
-      - tandoor
-    restart: unless-stopped
-
 volumes:
-  nginx_config:
   staticfiles:

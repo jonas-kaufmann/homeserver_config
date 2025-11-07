@@ -22,7 +22,7 @@ services:
       environment:
         PAPERLESS_URL: https://paperless.${MY_DOMAIN}
 
-    tandoor_nginx:
+    tandoor:
       labels:
         - 'traefik.enable=true'
         - 'traefik.http.routers.tandoor.rule=Host(`tandoor.${MY_DOMAIN}`)'
