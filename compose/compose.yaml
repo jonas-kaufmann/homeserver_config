@@ -7,6 +7,7 @@ include:
   - ../pihole/compose.yaml
   - ../hetzner_ddns/compose.yaml
   - ../homeassistant/compose.yaml
+  - ../emby/compose.yaml
 
 services:
   proxy:

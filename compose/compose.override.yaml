@@ -40,3 +40,10 @@ services:
         - 'traefik.http.routers.ha.rule=Host(`ha.${MY_DOMAIN}`)'
         - 'traefik.http.routers.ha.entryPoints=websecure'
         - 'traefik.http.services.ha.loadbalancer.server.port=8123'
+
+    emby:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.emby.rule=Host(`emby.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.emby.entryPoints=websecure'
+        - 'traefik.http.services.emby.loadbalancer.server.port=8096'
