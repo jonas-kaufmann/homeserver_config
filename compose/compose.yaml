@@ -51,7 +51,7 @@ services:
       - "80:80"
     environment:
       DUCKDNS_TOKEN: "${DUCKDNS_TOKEN}"
-      HETZNER_API_KEY: "${HETZNER_API_KEY}"
+      HETZNER_API_TOKEN: "${HETZNER_API_TOKEN}"
     # required for homeassistant
     extra_hosts:
       - "host.docker.internal:host-gateway"
