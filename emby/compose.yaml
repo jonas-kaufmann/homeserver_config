@@ -1,6 +1,6 @@
 services:
   emby:
-    image: emby/embyserver:latest
+    image: emby/embyserver:4.9.4.1
     container_name: embyserver
     # network_mode: host # Enable DLNA and Wake-on-Lan
     environment:
