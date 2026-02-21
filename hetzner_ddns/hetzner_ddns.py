@@ -60,6 +60,7 @@ def update_dns(record_id, record_name, ip):
 def main():
     ip = fritzbox.get_external_ip()
     if not ip:
+        print("Warning: External IP is empty. Leaving record untouched.")
         return
 
     old_ip = get_saved_ip()
