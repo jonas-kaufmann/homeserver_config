@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
+import datetime
 import json
 import os
 import sys
 
 import fritzbox
-import requests
+import hcloud
+import hcloud.zones as zones
 
-HETZNER_API_KEY = os.getenv("HETZNER_API_KEY")
-ZONE_ID = os.getenv("ZONE_ID")
-
-RECORD_IDS = [
-    r.strip() for r in (os.getenv("RECORD_IDS") or "").split(",") if r.strip()
-]
+HETZNER_API_TOKEN = os.getenv("HETZNER_API_TOKEN")
+MY_DOMAIN = os.getenv("MY_DOMAIN")
 RECORD_NAMES = [
     r.strip() for r in (os.getenv("RECORD_NAMES") or "").split(",") if r.strip()
 ]
 
 STATE_FILE = "state.json"
-BASE_URL = "https://dns.hetzner.com/api/v1"
 
-if not HETZNER_API_KEY or not ZONE_ID or not RECORD_IDS or not RECORD_NAMES:
+if not HETZNER_API_TOKEN or not MY_DOMAIN or not RECORD_NAMES:
     print(
-        "Missing configuration (HETZNER_API_KEY, ZONE_ID, RECORD_IDS)", file=sys.stderr
+        "Missing configuration (HETZNER_API_TOKEN, MY_DOMAIN, RECORD_NAMES)",
+        file=sys.stderr,
     )
     sys.exit(1)
+
+client = hcloud.Client(token=HETZNER_API_TOKEN)
 
 
 def get_saved_ip():
@@ -41,17 +41,25 @@ def save_ip(ip):
         json.dump({"ip": ip}, f)
 
 
-def update_dns(record_id, record_name, ip):
-    url = f"{BASE_URL}/records/{record_id}"
-    headers = {"Auth-API-Token": HETZNER_API_KEY, "Content-Type": "application/json"}
-    data = {"name": record_name, "value": ip, "type": "A", "zone_id": ZONE_ID}
-    r = requests.put(url, headers=headers, json=data)
-    if r.status_code == 200:
-        print(f"Updated record {record_id} {record_name} -> {ip}")
+def update_dns(domain: str, record_name: str, ip: str):
+    try:
+        time_now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        action = client.zones.set_rrset_records(
+            rrset=zones.ZoneRRSet(
+                zone=zones.Zone(name=domain),
+                name=record_name,
+                type="A",
+            ),
+            records=[zones.ZoneRecord(value=ip, comment=time_now)],
+        )
+        action.wait_until_finished()
+
+        print(f"Updated record {record_name} -> {ip}")
         return True
-    else:
+
+    except Exception as e:
         print(
-            f"Failed to update record {record_id} {record_name}: {r.status_code} {r.text}",
+            f"Failed to update record {record_name}: {e}",
             file=sys.stderr,
         )
         return False
@@ -65,18 +73,18 @@ def main():
 
     old_ip = get_saved_ip()
     if ip == old_ip:
-        return  # nothing to do
+        return
 
     all_success = True
-    for record_id, record_name in zip(RECORD_IDS, RECORD_NAMES):
-        success = update_dns(record_id, record_name, ip)
+    for record_name in RECORD_NAMES:
+        success = update_dns(MY_DOMAIN, record_name, ip)
         if not success:
             all_success = False
 
     if all_success:
         save_ip(ip)
     else:
-        print("Not all updates succeeded, IP state not saved. Will retry on next run.")
+        print("Not all updates succeeded, IP state not saved. Will retry.")
 
 
 if __name__ == "__main__":

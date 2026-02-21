@@ -1,2 +1,3 @@
 fritzconnection
+hcloud
 requests

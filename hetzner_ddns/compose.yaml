@@ -4,7 +4,7 @@ services:
     build: .
     environment:
       MY_DOMAIN: ${MY_DOMAIN}
-      HETZNER_API_KEY: "${HETZNER_API_KEY}"
+      HETZNER_API_TOKEN: "${HETZNER_API_TOKEN}"
     env_file:
       - .secrets.env
     volumes:
