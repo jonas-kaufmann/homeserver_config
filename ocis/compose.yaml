@@ -16,6 +16,8 @@ services:
       SETTINGS_GRPC_ADDR: 0.0.0.0:9191
       # INSECURE: needed if oCIS / Traefik is using self generated certificates
       OCIS_INSECURE: "${INSECURE:-false}"
+      # since the ldap service runs in the same container, no need to use TLS
+      OCIS_LDAP_INSECURE: "true"
       # basic auth (not recommended, but needed for e.g., WebDav clients that do not support OpenID Connect)
       PROXY_ENABLE_BASIC_AUTH: "${PROXY_ENABLE_BASIC_AUTH:-false}"
       # demo users
