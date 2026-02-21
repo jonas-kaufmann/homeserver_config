@@ -3,6 +3,7 @@ import json
 import os
 import sys
 
+import fritzbox
 import requests
 
 HETZNER_API_KEY = os.getenv("HETZNER_API_KEY")
@@ -23,14 +24,6 @@ if not HETZNER_API_KEY or not ZONE_ID or not RECORD_IDS or not RECORD_NAMES:
         "Missing configuration (HETZNER_API_KEY, ZONE_ID, RECORD_IDS)", file=sys.stderr
     )
     sys.exit(1)
-
-
-def get_public_ip():
-    try:
-        return requests.get("https://api.ipify.org", timeout=10).text.strip()
-    except Exception as e:
-        print(f"Error getting public IP: {e}", file=sys.stderr)
-        return None
 
 
 def get_saved_ip():
@@ -65,7 +58,7 @@ def update_dns(record_id, record_name, ip):
 
 
 def main():
-    ip = get_public_ip()
+    ip = fritzbox.get_external_ip()
     if not ip:
         return
 
