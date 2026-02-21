@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-import requests
+import json
 import os
 import sys
-import json
+
+import requests
 
 HETZNER_API_KEY = os.getenv("HETZNER_API_KEY")
 ZONE_ID = os.getenv("ZONE_ID")
@@ -24,7 +25,6 @@ if not HETZNER_API_KEY or not ZONE_ID or not RECORD_IDS or not RECORD_NAMES:
     sys.exit(1)
 
 
-# === Functions ===
 def get_public_ip():
     try:
         return requests.get("https://api.ipify.org", timeout=10).text.strip()
@@ -64,7 +64,6 @@ def update_dns(record_id, record_name, ip):
         return False
 
 
-# === Main ===
 def main():
     ip = get_public_ip()
     if not ip:
