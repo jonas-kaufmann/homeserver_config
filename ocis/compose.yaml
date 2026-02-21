@@ -9,7 +9,7 @@ services:
     # therefore we ignore the error and then start the ocis server
     command: ["-c", "ocis init || true; ocis server"]
     environment:
-      OCIS_LOG_LEVEL: ${OCIS_LOG_LEVEL:-info}
+      OCIS_LOG_LEVEL: ${OCIS_LOG_LEVEL:-warn}
       OCIS_LOG_COLOR: "${OCIS_LOG_COLOR:-false}"
       PROXY_TLS: "false" # do not use SSL between Traefik and oCIS
       # make settings service available to oCIS Hello
