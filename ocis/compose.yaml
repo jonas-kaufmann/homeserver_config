@@ -19,7 +19,7 @@ services:
       # since the ldap service runs in the same container, no need to use TLS
       OCIS_LDAP_INSECURE: "true"
       # basic auth (not recommended, but needed for e.g., WebDav clients that do not support OpenID Connect)
-      PROXY_ENABLE_BASIC_AUTH: "${PROXY_ENABLE_BASIC_AUTH:-false}"
+      PROXY_ENABLE_BASIC_AUTH: "${PROXY_ENABLE_BASIC_AUTH:-true}"
       # demo users
       IDM_CREATE_DEMO_USERS: "${DEMO_USERS:-false}"
       # password policies
