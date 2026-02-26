@@ -8,6 +8,7 @@ include:
   - ../hetzner_ddns/compose.yaml
   - ../homeassistant/compose.yaml
   - ../emby/compose.yaml
+  - ../filebrowser/compose.yaml
 
 services:
   proxy:

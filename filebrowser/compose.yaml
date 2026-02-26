@@ -1,0 +1,9 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    volumes:
+      - /mnt/media0/filebrowser/database:/database
+      - /mnt/media0/filebrowser/config:/config
+      - /mnt/media0/emby/media:/srv/media
+    restart: unless-stopped

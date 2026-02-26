@@ -47,3 +47,9 @@ services:
         - 'traefik.http.routers.emby.rule=Host(`emby.${MY_DOMAIN}`)'
         - 'traefik.http.routers.emby.entryPoints=websecure'
         - 'traefik.http.services.emby.loadbalancer.server.port=8096'
+    
+    filebrowser:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.filebrowser.rule=Host(`fb.${MY_DOMAIN}`)'
+        - 'traefik.http.routers.filebrowser.entryPoints=websecure'
