@@ -28,4 +28,4 @@ services:
       - /mnt/media0/ocis/config:/etc/ocis
       - /mnt/media0/ocis/data:/var/lib/ocis
       - ./config/banned-password-list.txt:/etc/ocis/banned-password-list.txt
-    restart: unless-stopped
+    restart: always

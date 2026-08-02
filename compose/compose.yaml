@@ -17,7 +17,7 @@ services:
     container_name: traefik
     # depends_on: 
     #   - authelia
-    restart: unless-stopped
+    restart: always
     command:
       - "--log.level=WARN"
       # - "--api.insecure=true"
@@ -61,7 +61,7 @@ services:
 
   # authelia_redis:
   #   image: redis
-  #   restart: unless-stopped
+  #   restart: always
   #   container_name: authelia_redis
 
   # authelia:
@@ -76,7 +76,7 @@ services:
   #     - 'traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Email,Remote-Name'
   #   volumes:
   #     - ../data/authelia:/config
-  #   restart: unless-stopped
+  #   restart: always
   #   expose: 
   #     - 9091
   #   environment:

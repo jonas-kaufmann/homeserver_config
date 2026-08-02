@@ -6,7 +6,7 @@ services:
       - /home/jonask/data/tandoor/postgresql:/var/lib/postgresql/data
     env_file:
       - ./.env
-    restart: unless-stopped
+    restart: always
     
 
   tandoor:
@@ -20,7 +20,7 @@ services:
       - /mnt/media0/tandoor/mediafiles:/opt/recipes/mediafiles
     depends_on:
       - tandoor_db
-    restart: unless-stopped
+    restart: always
 
 volumes:
   staticfiles:

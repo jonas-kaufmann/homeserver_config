@@ -9,4 +9,4 @@ services:
       - .secrets.env
     volumes:
       - ./state.json:/app/state.json
-    restart: unless-stopped
+    restart: always

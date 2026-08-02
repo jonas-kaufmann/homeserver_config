@@ -15,4 +15,4 @@ services:
       - 8920:8920
     devices:
       - /dev/dri:/dev/dri
-    restart: 'unless-stopped'
+    restart: always

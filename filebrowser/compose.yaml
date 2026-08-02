@@ -6,4 +6,4 @@ services:
       - /mnt/media0/filebrowser/database:/database
       - /mnt/media0/filebrowser/config:/config
       - /mnt/media0/emby/media:/srv/media
-    restart: unless-stopped
+    restart: always

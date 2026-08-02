@@ -8,4 +8,4 @@ services:
       - /run/dbus:/run/dbus:ro
     network_mode: host
     # privileged: true
-    restart: unless-stopped
+    restart: always
