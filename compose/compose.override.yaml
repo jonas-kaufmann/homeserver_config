@@ -27,6 +27,8 @@ services:
         - 'traefik.enable=true'
         - 'traefik.http.routers.tandoor.rule=Host(`tandoor.${MY_DOMAIN}`)'
         - 'traefik.http.routers.tandoor.entryPoints=websecure'
+      environment:
+        ALLOWED_HOSTS: tandoor.${MY_DOMAIN}
 
     pihole:
       labels:
